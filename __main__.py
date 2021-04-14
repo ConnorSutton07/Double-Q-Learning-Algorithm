@@ -17,9 +17,15 @@ def train_agent(num_episodes = 1000) -> tuple:
         state = env.reset()
         episode_reward = 0
         terminal = False
+        num_steps = 0
         while not terminal:
             action_id, action = agent.act(state)
             next_state, reward, terminal = env.step(action)
+
+            num_steps += 1
+            if num_steps % agent.copy_steps == 0:
+                agent.copy()
+                
             episode_reward += reward
 
             agent.q_update(state, action_id, reward, next_state, terminal)
@@ -47,6 +53,14 @@ def rolling_average(buffer: list, k: int) -> list:
             avg.append(cur_avg)
     return normalize(avg)
 
+def plot_reward(reward_plot: list) -> None:
+    plt.style.use("dark_background")
+    plt.plot(reward_plot)
+    plt.xlabel("Episodes")
+    plt.ylabel("Reward")
+    plt.show()
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Deep-Q Learning Example")
     parser.add_argument("--episodes", type=int, nargs='?',
@@ -55,6 +69,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     reward_plot, best_policy = train_agent(args.episodes)
     print("Best policy: ", best_policy)
-    plt.plot(reward_plot)
-    plt.show()
+    plot_reward(reward_plot)
+
+
     

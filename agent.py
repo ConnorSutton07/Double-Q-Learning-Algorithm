@@ -5,6 +5,8 @@ learn to navigate the grid-space
 """
 import random
 import numpy as np
+import argparse
+from copy import deepcopy
 
 random.seed(0)
 np.random.seed(0)
@@ -16,6 +18,7 @@ class AgentQ:
         self.exp_rate = 1
         self.decay = 0.99
         self.q_table = np.zeros((9, 8))
+        self.copy_steps = 10
         self.actions = [(a, b) for a in range(-1, 2)
                                 for b in range(-1, 2)
                                  if (a, b) != (0, 0)]
@@ -29,6 +32,9 @@ class AgentQ:
         
         self.exp_rate *= self.decay 
         return action_id, self.actions[action_id]
+
+    def copy(self) -> np.array:
+        self.q_target = deepcopy(self.q_table)
 
     def q_update(self, 
                  state: tuple, 
