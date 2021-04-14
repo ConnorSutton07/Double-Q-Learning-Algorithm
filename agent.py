@@ -18,6 +18,7 @@ class AgentQ:
         self.exp_rate = 1
         self.decay = 0.99
         self.q_table = np.zeros((9, 8))
+        self.q_target = np.zeros((9, 8))
         self.copy_steps = 10
         self.actions = [(a, b) for a in range(-1, 2)
                                 for b in range(-1, 2)
@@ -47,7 +48,7 @@ class AgentQ:
         if terminal:
             target = reward
         else:
-            target = reward + self.gamma * max(self.q_table[next_state])
+            target = reward + self.gamma * max(self.q_target[next_state])
         td_error = target - self.q_table[state, action_id]
         self.q_table[state, action_id] = self.q_table[state, action_id] + self.alpha * td_error
 

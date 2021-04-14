@@ -25,7 +25,7 @@ def train_agent(num_episodes = 1000) -> tuple:
             num_steps += 1
             if num_steps % agent.copy_steps == 0:
                 agent.copy()
-                
+
             episode_reward += reward
 
             agent.q_update(state, action_id, reward, next_state, terminal)
@@ -62,7 +62,7 @@ def plot_reward(reward_plot: list) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Deep-Q Learning Example")
+    parser = argparse.ArgumentParser(description="Double Deep-Q Learning Example")
     parser.add_argument("--episodes", type=int, nargs='?',
                         const=True, default=1000, 
                         help="Number of training episodes")
