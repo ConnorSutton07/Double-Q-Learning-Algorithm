@@ -6,7 +6,7 @@ Serves as driver
 from agent import AgentQ
 from grid import Grid
 import matplotlib.pyplot as plt
-
+import argparse
 
 def train_agent(num_episodes = 1000) -> tuple:
     agent = AgentQ()
@@ -48,7 +48,12 @@ def rolling_average(buffer: list, k: int) -> list:
     return normalize(avg)
 
 if __name__ == "__main__":
-    reward_plot, best_policy = train_agent()
+    parser = argparse.ArgumentParser(description="Deep-Q Learning Example")
+    parser.add_argument("--episodes", type=int, nargs='?',
+                        const=True, default=1000, 
+                        help="Number of training episodes")
+    args = parser.parse_args()
+    reward_plot, best_policy = train_agent(args.episodes)
     print("Best policy: ", best_policy)
     plt.plot(reward_plot)
     plt.show()
